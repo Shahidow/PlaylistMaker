@@ -18,11 +18,13 @@
             android:contentDescription="@string/back"
             app:icon="@drawable/back"
             app:iconPadding="24dp"
-            app:iconTint="@color/black2"/>
-
+            app:iconTint="@color/blackIcon"
+            android:stateListAnimator="@null"
+            android:elevation="@null"
+            android:translationZ="@null"/>
         <TextView
-            android:layout_width="134dp"
-            android:layout_height="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="48dp"
             android:text="@string/settings"
@@ -34,7 +36,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
         <Switch
             android:paddingHorizontal="16dp"
@@ -49,38 +50,47 @@
             android:backgroundTint="@color/white"
             android:gravity=""
             android:text="@string/share"
-            android:textColor="@color/black2"
+            android:textColor="@color/blackIcon"
             android:textSize="15sp"
             android:textAllCaps="false"
             app:icon="@drawable/share"
             app:iconTint="@color/grey"
             app:iconGravity="end"
-            tools:ignore="VisualLintButtonSize" />
+            tools:ignore="VisualLintButtonSize"
+            android:stateListAnimator="@null"
+            android:elevation="@null"
+            android:translationZ="@null"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="@dimen/settingsHeight"
             android:backgroundTint="@color/white"
             android:gravity=""
             android:text="@string/support"
-            android:textColor="@color/black2"
+            android:textColor="@color/blackIcon"
             android:textSize="15sp"
             android:textAllCaps="false"
             app:icon="@drawable/support"
             app:iconTint="@color/grey"
             app:iconGravity="end"
-            tools:ignore="VisualLintButtonSize" />
+            tools:ignore="VisualLintButtonSize"
+            android:stateListAnimator="@null"
+            android:elevation="@null"
+            android:translationZ="@null"/>
         <Button
             android:layout_width="match_parent"
-            android:layout_height="@dimen/settingsHeight"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:gravity=""
             android:text="@string/terms"
-            android:textColor="@color/black2"
+            android:textColor="@color/blackIcon"
             android:textSize="15sp"
             android:textAllCaps="false"
             app:icon="@drawable/arrow"
             app:iconTint="@color/grey"
             app:iconGravity="end"
-            tools:ignore="VisualLintButtonSize" />
+            tools:ignore="VisualLintButtonSize"
+            android:stateListAnimator="@null"
+            android:elevation="@null"
+            android:translationZ="@null"/>
     </LinearLayout>>
 </LinearLayout>
