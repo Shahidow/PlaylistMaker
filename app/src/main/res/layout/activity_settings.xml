@@ -2,35 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
+    style="@style/App"
     tools:ignore="ExtraText">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
+            style="@style/BackButtom"
             android:id="@+id/backFromSettings"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:backgroundTint="@color/white"
             android:contentDescription="@string/back"
             app:icon="@drawable/back"
-            app:iconPadding="24dp"
-            app:iconTint="@color/blackIcon"
-            android:stateListAnimator="@null"
-            android:elevation="@null"
-            android:translationZ="@null"/>
+            app:iconGravity="start"
+            app:iconPadding="24dp"/>
         <TextView
+            style="@style/TextMenu"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="60dp"
             android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textMenu"
-            android:textStyle="bold"
             tools:ignore="TextSizeCheck" />
     </FrameLayout>>
     <LinearLayout
@@ -38,6 +29,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <Switch
+            android:fontFamily="@font/ys_display_regular"
             android:paddingHorizontal="16dp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/settingsHeight"
@@ -45,52 +37,23 @@
             android:textSize="16sp"
             tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settingsHeight"
-            android:backgroundTint="@color/white"
-            android:gravity=""
+            android:id="@+id/share"
+            style="@style/SettingsButtom"
             android:text="@string/share"
-            android:textColor="@color/blackIcon"
-            android:textSize="15sp"
-            android:textAllCaps="false"
             app:icon="@drawable/share"
-            app:iconTint="@color/grey"
-            app:iconGravity="end"
-            tools:ignore="VisualLintButtonSize"
-            android:stateListAnimator="@null"
-            android:elevation="@null"
-            android:translationZ="@null"/>
+            tools:ignore="VisualLintButtonSize"/>
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settingsHeight"
-            android:backgroundTint="@color/white"
-            android:gravity=""
+            android:id="@+id/support"
+            style="@style/SettingsButtom"
             android:text="@string/support"
-            android:textColor="@color/blackIcon"
-            android:textSize="15sp"
-            android:textAllCaps="false"
             app:icon="@drawable/support"
-            app:iconTint="@color/grey"
-            app:iconGravity="end"
-            tools:ignore="VisualLintButtonSize"
-            android:stateListAnimator="@null"
-            android:elevation="@null"
-            android:translationZ="@null"/>
+            tools:ignore="VisualLintButtonSize"/>
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/terms"
+            style="@style/SettingsButtom"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:gravity=""
             android:text="@string/terms"
-            android:textColor="@color/blackIcon"
-            android:textSize="15sp"
-            android:textAllCaps="false"
             app:icon="@drawable/arrow"
-            app:iconTint="@color/grey"
-            app:iconGravity="end"
-            tools:ignore="VisualLintButtonSize"
-            android:stateListAnimator="@null"
-            android:elevation="@null"
-            android:translationZ="@null"/>
+            tools:ignore="VisualLintButtonSize"/>
     </LinearLayout>>
 </LinearLayout>
