@@ -28,11 +28,12 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp">
         <EditText
+            style="@style/EditTextStyle"
             android:id="@+id/inputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
-            android:background="@color/lightGrey"
+            android:background="@drawable/edittext_background"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
             android:padding="8dp"
@@ -40,18 +41,17 @@
             android:lines="1"
             android:maxLength="15"
             android:textColor="@color/blackPM"
-            android:textColorHint="@color/grey"
             android:textSize="18sp"
-            android:drawableLeft="@drawable/search"
             android:drawableStart="@drawable/search"
-            android:drawableTint="@color/grey"
             android:drawablePadding="8dp"/>
         <ImageView
+            style="@style/EditTextStyle"
             android:id="@+id/clearIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/clear"
+            android:layout_marginEnd="6dp"
             android:visibility="gone"/>
     </FrameLayout>
 </LinearLayout>

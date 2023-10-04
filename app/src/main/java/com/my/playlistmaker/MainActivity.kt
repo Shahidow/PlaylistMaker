@@ -12,25 +12,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         super.onCreate(savedInstanceState)
 
-        val search = findViewById<Button>(R.id.search)
-        val library = findViewById<Button>(R.id.library)
-        val settings = findViewById<Button>(R.id.settings)
+        val searchButton = findViewById<Button>(R.id.search)
+        val libraryButton = findViewById<Button>(R.id.library)
+        val settingsButton = findViewById<Button>(R.id.settings)
 
-        search.setOnClickListener{
-            val searchIntent = Intent(this, Search::class.java)
+        searchButton.setOnClickListener{
+            val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
 
         val libraryClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val libraryIntent = Intent(this@MainActivity, Library::class.java)
+                val libraryIntent = Intent(this@MainActivity, LibraryActivity::class.java)
                 startActivity(libraryIntent)
             }
         }
-        library.setOnClickListener(libraryClickListener)
+        libraryButton.setOnClickListener(libraryClickListener)
 
-        settings.setOnClickListener{
-            val settingsIntent = Intent(this, Settings::class.java)
+        settingsButton.setOnClickListener{
+            val settingsIntent = Intent(this, SettingsActivity::class.java)
             startActivity(settingsIntent)
         }
     }

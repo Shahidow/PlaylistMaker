@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-class Settings : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -17,8 +17,7 @@ class Settings : AppCompatActivity() {
         val terms= findViewById<Button>(R.id.terms)
 
         back.setOnClickListener{
-            val backIntent = Intent(this, MainActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
 
         share.setOnClickListener{
@@ -30,21 +29,22 @@ class Settings : AppCompatActivity() {
         }
 
         support.setOnClickListener{
-            val supportIntent = Intent(Intent.ACTION_SENDTO)
-            val message = getString(R.string.supportMsg)
-            val subject = getString(R.string.supportSubject)
-            supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, "shahidow@mail.ru")
-            supportIntent.putExtra(Intent.EXTRA_TEXT, message)
-            startActivity(supportIntent)
+            Intent(Intent.ACTION_SENDTO).apply {
+                val message = getString(R.string.supportMsg)
+                val subject = getString(R.string.supportSubject)
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf("shahidow@mail.ru"))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, message)
+                startActivity(this)
+            }
         }
 
         terms.setOnClickListener{
             val url = getString(R.string.practicumOfferUrl)
-            val shareIntent = Intent(Intent.ACTION_VIEW)
-            shareIntent.data = Uri.parse(url)
-            startActivity(shareIntent)
+            val termsIntent = Intent(Intent.ACTION_VIEW)
+            termsIntent.data = Uri.parse(url)
+            startActivity(termsIntent)
         }
     }
 }

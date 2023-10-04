@@ -3,7 +3,7 @@ package com.my.playlistmaker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class Library : AppCompatActivity() {
+class LibraryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_library)
