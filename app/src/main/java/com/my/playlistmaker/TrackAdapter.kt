@@ -11,15 +11,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class TrackAdapter(
     val trackList: List<Track>
-): RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
-    class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val trackName: TextView
         private val artistName: TextView
         private val trackTime: TextView
         private val artworkUrl100: ImageView
 
-        init{
+        init {
             trackName = itemView.findViewById(R.id.trackName)
             artistName = itemView.findViewById(R.id.artistName)
             trackTime = itemView.findViewById(R.id.trackTime)
@@ -34,7 +34,7 @@ class TrackAdapter(
                 .load(model.artworkUrl100)
                 .placeholder(R.drawable.placeholder)
                 .fitCenter()
-                .transform(RoundedCorners(10))
+                .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.searchRadius)))
                 .into(artworkUrl100)
         }
     }
