@@ -43,7 +43,9 @@
             android:textColor="@color/blackPM"
             android:textSize="18sp"
             android:drawableStart="@drawable/search"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
         <ImageView
             style="@style/EditTextStyle"
             android:id="@+id/clearIcon"
@@ -55,10 +57,65 @@
             android:visibility="gone"/>
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackRecycler"
-        android:layout_marginTop="16dp"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/noresults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <ImageView
+                style="@style/SearchNoResults"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_gravity="center"/>
+            <TextView
+                style="@style/SearchErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/noresults"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nointernet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <ImageView
+                style="@style/SearchNoInternet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_gravity="center"/>
+            <TextView
+                style="@style/SearchErrorText"
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/nointernet"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refresh"
+                style="@style/SearchRefreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:text="@string/refresh"/>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
