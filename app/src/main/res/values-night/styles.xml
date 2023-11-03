@@ -74,4 +74,14 @@
         <item name="android:textColorHint">@color/blackPM</item>
         <item name="android:drawableTint">@color/blackPM</item>
     </style>
+    <style name="SearchTrackName">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="SearchTrackInfo">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
 </resources>

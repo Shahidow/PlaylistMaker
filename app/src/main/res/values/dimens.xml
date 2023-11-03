@@ -4,4 +4,7 @@
     <dimen name="settingsHeight">60dp</dimen>
     <dimen name="buttonRadius">16dp</dimen>
     <dimen name="buttonPadding">8dp</dimen>
+    <dimen name="searchRadius">2dp</dimen>
+    <dimen name="searchImageSize">45dp</dimen>
+    <dimen name="searchIconSize">13dp</dimen>
 </resources>
