@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackAdapter(
-    val trackList: List<Track>
+    private val trackList: List<Track>
 ) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,8 @@ class TrackAdapter(
         fun bind(model: Track) {
             trackName.text = model.trackName
             artistName.text = model.artistName
-            trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+            trackTime.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
             Glide.with(itemView)
                 .load(model.artworkUrl100)
                 .placeholder(R.drawable.placeholder)
@@ -52,7 +53,8 @@ class TrackAdapter(
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(trackList[position])
+        holder.itemView.setOnClickListener {
+            searchHistoryList.addTrack(trackList[position])
+        }
     }
-
-
 }

@@ -4,57 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/App"
     tools:ignore="ExtraText">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
-            style="@style/BackButtom"
             android:id="@+id/backFromSearch"
+            style="@style/BackButtom"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/back"
             app:icon="@drawable/back"
             app:iconGravity="start"
-            app:iconPadding="24dp"/>
+            app:iconPadding="24dp" />
+
         <TextView
             style="@style/TextMenu"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="60dp"
-            android:text="@string/search"/>
+            android:text="@string/search" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp">
+
         <EditText
-            style="@style/EditTextStyle"
             android:id="@+id/inputEditText"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:background="@drawable/edittext_background"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="8dp"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
-            android:padding="8dp"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
             android:maxLength="15"
+            android:padding="8dp"
+            android:singleLine="true"
             android:textColor="@color/blackPM"
-            android:textSize="18sp"
-            android:drawableStart="@drawable/search"
-            android:drawablePadding="8dp"
-            android:imeOptions="actionDone"
-            android:singleLine="true"/>
+            android:textSize="18sp" />
+
         <ImageView
-            style="@style/EditTextStyle"
             android:id="@+id/clearIcon"
+            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:src="@drawable/clear"
             android:layout_marginEnd="6dp"
-            android:visibility="gone"/>
+            android:src="@drawable/clear"
+            android:visibility="gone" />
     </FrameLayout>
 
     <FrameLayout
@@ -65,7 +71,43 @@
             android:id="@+id/trackRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/searchHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/TextMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:text="@string/searchHistory"
+                android:textSize="19sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/historyRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clearHistory"
+                style="@style/SearchRefreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:text="@string/clearHistory" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/noresults"
@@ -73,19 +115,21 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone">
+
             <ImageView
                 style="@style/SearchNoResults"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp" />
+
             <TextView
                 style="@style/SearchErrorText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="@string/noresults"/>
+                android:gravity="center"
+                android:text="@string/noresults" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,20 +138,23 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone">
+
             <ImageView
                 style="@style/SearchNoInternet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp" />
+
             <TextView
-                style="@style/SearchErrorText"
                 android:id="@+id/textView"
+                style="@style/SearchErrorText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="@string/nointernet"/>
+                android:gravity="center"
+                android:text="@string/nointernet" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/refresh"
                 style="@style/SearchRefreshButton"
@@ -115,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:text="@string/refresh"/>
+                android:text="@string/refresh" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

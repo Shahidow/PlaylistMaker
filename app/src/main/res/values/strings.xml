@@ -15,4 +15,6 @@
     <string name="noresults">Ничего не нашлось</string>
     <string name="nointernet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету.</string>
     <string name="refresh">Обновить</string>
+    <string name="clearHistory">Очистить историю</string>
+    <string name="searchHistory">Вы искали</string>
 </resources>
