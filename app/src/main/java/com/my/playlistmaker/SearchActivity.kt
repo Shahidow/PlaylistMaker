@@ -35,11 +35,7 @@ class SearchActivity : AppCompatActivity() {
     private val trackService = retrofit.create(TrackApiService::class.java)
     private val trackList = ArrayList<Track>()
     private val adapter = TrackAdapter(trackList)
-    var editText: String = ""
-
-    companion object {
-        private const val SEARCH_TEXT = "SEARCH_TEXT"
-    }
+    private var editText: String = ""
 
     fun readFromSharedPrefs(sharedPreferences: SharedPreferences): Array<Track> {
         val json = sharedPreferences.getString(HISTORY_KEY, null) ?: return emptyArray()
@@ -159,6 +155,7 @@ class SearchActivity : AppCompatActivity() {
             noResults.visibility = View.GONE
             adapter.notifyDataSetChanged()
             inputEditText.setText("")
+            historyLayout.visibility = View.VISIBLE
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
@@ -186,5 +183,9 @@ class SearchActivity : AppCompatActivity() {
         } else {
             View.VISIBLE
         }
+    }
+
+    companion object {
+        private const val SEARCH_TEXT = "SEARCH_TEXT"
     }
 }

@@ -4,9 +4,9 @@ data class Track(
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Long, // Продолжительность трека
-    val artworkUrl100: String,
+    val artworkUrl100: String, // Ссылка на изображение обложки
     val trackId: Long,
-) // Ссылка на изображение обложки
+)
 
 data class TrackResponse(
     val results: List<Track>,

@@ -11,7 +11,7 @@ const val HISTORY_KEY = "key_for_history_switch"
 
 class App : Application() {
 
-    var darkTheme = false
+    private var darkTheme = false
     lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate() {

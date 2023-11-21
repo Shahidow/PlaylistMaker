@@ -147,7 +147,6 @@
                 android:layout_marginTop="100dp" />
 
             <TextView
-                android:id="@+id/textView"
                 style="@style/SearchErrorText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

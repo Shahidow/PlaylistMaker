@@ -17,7 +17,7 @@ class SearchHistoryList {
             if (list.contains(item)) {
                 list.remove(item)
             }
-            if (list.size > 9) {
+            if (list.size > SEARCH_HISTORY_LIST_SIZE) {
                 list.removeLast()
             }
         }
@@ -35,4 +35,8 @@ class SearchHistoryList {
     }
 
     fun listen(): Observable<List<Track>> = subject
+
+    companion object {
+        const val SEARCH_HISTORY_LIST_SIZE = 9
+    }
 }
