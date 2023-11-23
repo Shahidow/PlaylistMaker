@@ -2,6 +2,7 @@ package com.my.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -11,16 +12,18 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+val searchHistoryList = SearchHistoryList()
 
 class SearchActivity : AppCompatActivity() {
 
@@ -32,11 +35,11 @@ class SearchActivity : AppCompatActivity() {
     private val trackService = retrofit.create(TrackApiService::class.java)
     private val trackList = ArrayList<Track>()
     private val adapter = TrackAdapter(trackList)
+    private var editText: String = ""
 
-    var editText: String = ""
-
-    companion object {
-        private const val SEARCH_TEXT = "SEARCH_TEXT"
+    fun readFromSharedPrefs(sharedPreferences: SharedPreferences): Array<Track> {
+        val json = sharedPreferences.getString(HISTORY_KEY, null) ?: return emptyArray()
+        return Gson().fromJson(json, Array<Track>::class.java)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -51,6 +54,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(editText)
     }
 
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -59,13 +63,35 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val recyclerTrack = findViewById<RecyclerView>(R.id.trackRecycler)
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val noresults = findViewById<LinearLayout>(R.id.noresults)
-        val nointernet = findViewById<LinearLayout>(R.id.nointernet)
+        val noResults = findViewById<LinearLayout>(R.id.noresults)
+        val noInternet = findViewById<LinearLayout>(R.id.nointernet)
         val refresh = findViewById<Button>(R.id.refresh)
+        val historyLayout = findViewById<LinearLayout>(R.id.searchHistory)
+        val clearHistoryButton = findViewById<Button>(R.id.clearHistory)
+        val historyRecycler = findViewById<RecyclerView>(R.id.historyRecycler)
+        val historySharedPrefs =
+            getSharedPreferences(HISTORY_EXAMPLE_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
+        searchHistoryList.addList(ArrayList(readFromSharedPrefs(historySharedPrefs).toList()))
+        if (searchHistoryList.get().isNotEmpty()){
+            historyLayout.visibility = View.VISIBLE
+        }
+        val historyAdapter = TrackAdapter(searchHistoryList.get())
 
         recyclerTrack.layoutManager = LinearLayoutManager(this)
         recyclerTrack.adapter = adapter
+
+        historyRecycler.layoutManager = LinearLayoutManager(this)
+        historyRecycler.adapter = historyAdapter
+
         var searchText = ""
+
+        searchHistoryList.listen().subscribe { list ->
+            val json = Gson().toJson(list)
+            historySharedPrefs.edit()
+                .putString(HISTORY_KEY, json)
+                .apply()
+            historyAdapter.notifyDataSetChanged()
+        }
 
         fun getTracks(text: String) {
             trackService.search(text)
@@ -75,19 +101,24 @@ class SearchActivity : AppCompatActivity() {
                         response: Response<TrackResponse>
                     ) {
                         if (response.body()?.results?.isNotEmpty() == true) {
-                            nointernet.visibility = View.GONE
-                            noresults.visibility = View.GONE
+                            recyclerTrack.visibility = View.VISIBLE
+                            noInternet.visibility = View.GONE
+                            noResults.visibility = View.GONE
                             trackList.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
                         } else {
-                            noresults.visibility = View.VISIBLE
+                            recyclerTrack.visibility = View.GONE
+                            noInternet.visibility = View.GONE
+                            noResults.visibility = View.VISIBLE
                         }
                     }
 
                     override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                         trackList.clear()
                         adapter.notifyDataSetChanged()
-                        nointernet.visibility = View.VISIBLE
+                        recyclerTrack.visibility = View.GONE
+                        noResults.visibility = View.GONE
+                        noInternet.visibility = View.VISIBLE
                     }
                 })
         }
@@ -104,6 +135,11 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+        clearHistoryButton.setOnClickListener {
+            searchHistoryList.clear()
+            historyAdapter.notifyDataSetChanged()
+            historyLayout.visibility = View.GONE
+        }
 
         refresh.setOnClickListener {
             getTracks(searchText)
@@ -115,8 +151,11 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             trackList.clear()
+            noInternet.visibility = View.GONE
+            noResults.visibility = View.GONE
             adapter.notifyDataSetChanged()
             inputEditText.setText("")
+            historyLayout.visibility = View.VISIBLE
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
@@ -127,6 +166,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                historyLayout.visibility = View.GONE
                 clearButton.visibility = clearButtonVisibility(s)
             }
 
@@ -143,5 +183,9 @@ class SearchActivity : AppCompatActivity() {
         } else {
             View.VISIBLE
         }
+    }
+
+    companion object {
+        private const val SEARCH_TEXT = "SEARCH_TEXT"
     }
 }
