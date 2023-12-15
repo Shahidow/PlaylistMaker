@@ -103,7 +103,7 @@
 
     <ImageView
         android:id="@+id/playButton"
-        style="@style/PlayButton"
+        android:src="@drawable/button_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
