@@ -34,10 +34,9 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val trackService = retrofit.create(TrackApiService::class.java)
     private val trackList = ArrayList<Track>()
-    private val adapter = TrackAdapter(trackList)
     private var editText: String = ""
 
-    fun readFromSharedPrefs(sharedPreferences: SharedPreferences): Array<Track> {
+    private fun readFromSharedPrefs(sharedPreferences: SharedPreferences): Array<Track> {
         val json = sharedPreferences.getString(HISTORY_KEY, null) ?: return emptyArray()
         return Gson().fromJson(json, Array<Track>::class.java)
     }
@@ -72,10 +71,11 @@ class SearchActivity : AppCompatActivity() {
         val historySharedPrefs =
             getSharedPreferences(HISTORY_EXAMPLE_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
         searchHistoryList.addList(ArrayList(readFromSharedPrefs(historySharedPrefs).toList()))
-        if (searchHistoryList.get().isNotEmpty()){
+        if (searchHistoryList.get().isNotEmpty()) {
             historyLayout.visibility = View.VISIBLE
         }
-        val historyAdapter = TrackAdapter(searchHistoryList.get())
+        val adapter = TrackAdapter(trackList, this)
+        val historyAdapter = TrackAdapter(searchHistoryList.get(), this)
 
         recyclerTrack.layoutManager = LinearLayoutManager(this)
         recyclerTrack.adapter = adapter

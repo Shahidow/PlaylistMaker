@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            style="@style/BackButtom"
+            style="@style/BackButton"
             android:id="@+id/backFromSettings"
             android:layout_width="48dp"
             android:layout_height="48dp"
