@@ -2,6 +2,8 @@ package com.my.playlistmaker
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,13 @@ class TrackAdapter(
     private val trackList: List<Track>,
     private val context: Context
 ) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
 
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val trackName: TextView
@@ -46,6 +55,15 @@ class TrackAdapter(
         }
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_search, parent, false)
         return TrackViewHolder(view)
@@ -58,10 +76,12 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
-            val libraryIntent = Intent(context, PlayerActivity::class.java)
-            libraryIntent.putExtra("trackForPlayer", Gson().toJson(trackList[position]))
-            searchHistoryList.addTrack(trackList[position])
-            context.startActivity(libraryIntent)
+            if (clickDebounce()) {
+                val libraryIntent = Intent(context, PlayerActivity::class.java)
+                libraryIntent.putExtra("trackForPlayer", Gson().toJson(trackList[position]))
+                searchHistoryList.addTrack(trackList[position])
+                context.startActivity(libraryIntent)
+            }
         }
     }
 }
