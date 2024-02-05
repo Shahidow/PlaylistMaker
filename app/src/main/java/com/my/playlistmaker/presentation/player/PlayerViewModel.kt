@@ -3,6 +3,7 @@ package com.my.playlistmaker.presentation.player
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -16,8 +17,10 @@ class PlayerViewModel : ViewModel() {
     private var playTime = 1
     private val handler = Handler(Looper.getMainLooper())
     private var mediaPlayer = MediaPlayer()
-    var playerState = MutableLiveData<PlayerState>()
-    var playerTime = MutableLiveData<String>()
+    private var playerState = MutableLiveData<PlayerState>()
+    val playerStateLiveData: LiveData<PlayerState> = playerState
+    private var playerTime = MutableLiveData<String>()
+    val playerTimeLiveData: LiveData<String> = playerTime
 
     fun onCreate(trackURL: String) {
         mediaPlayer.setDataSource(trackURL)

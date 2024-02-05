@@ -2,6 +2,7 @@ package com.my.playlistmaker.presentation.search
 
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.my.playlistmaker.Track
@@ -20,8 +21,10 @@ class SearchViewModel(
     private var searchText = ""
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchTracks(searchText) }
-    var trackList = MutableLiveData<SearchState>()
-    var historyList = MutableLiveData<List<Track>>()
+    private var trackList = MutableLiveData<SearchState>()
+    val trackListLiveData : LiveData<SearchState> = trackList
+    private var historyList = MutableLiveData<List<Track>>()
+    val historyListLiveData: LiveData<List<Track>> = historyList
 
     fun searchDebounce(text: String) {
         if (text.isNotEmpty()) {

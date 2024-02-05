@@ -51,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        vm.trackList.observe(this, Observer {
+        vm.trackListLiveData.observe(this, Observer {
             when (it) {
                 is SearchState.Loading -> {
                     showLoading()
@@ -65,7 +65,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        vm.historyList.observe(this, Observer {
+        vm.historyListLiveData.observe(this, Observer {
             historyList.clear()
             historyList.addAll(it)
         })

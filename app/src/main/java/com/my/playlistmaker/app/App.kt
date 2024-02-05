@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 
-const val SETTING_EXAMPLE_PREFERENCES = "setting_example_preferences"
-const val SWITCH_KEY = "key_for_switch"
+const val SETTING_EXAMPLE_PREFERENCES = "SETTING_EXAMPLE_PREFERENCES"
+const val SWITCH_KEY = "KEY_FOR_SWITCH"
 
 class App : Application() {
 

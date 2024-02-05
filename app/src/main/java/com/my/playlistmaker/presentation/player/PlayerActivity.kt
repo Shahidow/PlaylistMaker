@@ -34,14 +34,14 @@ class PlayerActivity() : AppCompatActivity() {
 
         vm = ViewModelProvider(this)[PlayerViewModel::class.java]
 
-        vm.playerState.observe(this, Observer {
+        vm.playerStateLiveData.observe(this, Observer {
             when (it) {
                 PlayerState.STATE_PLAYING -> binding.playButton.setImageResource(R.drawable.button_pause)
                 else -> binding.playButton.setImageResource(R.drawable.button_play)
             }
         })
 
-        vm.playerTime.observe(this, Observer {
+        vm.playerTimeLiveData.observe(this, Observer {
             binding.playerTime.text = it
         })
 
