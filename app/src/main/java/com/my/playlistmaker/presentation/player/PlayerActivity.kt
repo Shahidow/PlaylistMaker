@@ -12,11 +12,12 @@ import com.my.playlistmaker.R
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.databinding.ActivityPlayerBinding
 import com.my.playlistmaker.presentation.player.mapper.trackMapper
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var vm: PlayerViewModel
+    private val vm by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +32,6 @@ class PlayerActivity() : AppCompatActivity() {
         )
 
         val trackURL = trackForPlayer.previewUrl
-
-        vm = ViewModelProvider(this)[PlayerViewModel::class.java]
 
         vm.playerStateLiveData.observe(this, Observer {
             when (it) {

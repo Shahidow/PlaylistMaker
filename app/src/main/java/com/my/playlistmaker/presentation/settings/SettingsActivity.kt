@@ -2,12 +2,12 @@ package com.my.playlistmaker.presentation.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.my.playlistmaker.databinding.ActivitySettingsBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val vm by viewModel<SettingsViewModel>()
     private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,12 +15,9 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel =
-            ViewModelProvider(this, SettingsViewModelFactory(applicationContext))[SettingsViewModel::class.java]
-
-        binding.themeSwitcher.isChecked = viewModel.themeState
+        binding.themeSwitcher.isChecked = vm.themeState
         binding.themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            viewModel.themeSwitcher(checked)
+            vm.themeSwitcher(checked)
         }
 
         binding.backFromSettings.setOnClickListener {
@@ -28,15 +25,15 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.share.setOnClickListener {
-            viewModel.share()
+            vm.share()
         }
 
         binding.support.setOnClickListener {
-            viewModel.support()
+            vm.support()
         }
 
         binding.terms.setOnClickListener {
-            viewModel.terms()
+            vm.terms()
         }
     }
 }
