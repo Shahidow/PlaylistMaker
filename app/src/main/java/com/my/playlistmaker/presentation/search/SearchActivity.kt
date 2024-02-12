@@ -10,15 +10,15 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.playlistmaker.*
 import com.my.playlistmaker.databinding.ActivitySearchBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var vm: SearchViewModel
+    private val vm by viewModel<SearchViewModel>()
     private lateinit var progressBar: ProgressBar
     private lateinit var noResults: LinearLayout
     private lateinit var noInternet: LinearLayout
@@ -33,8 +33,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        vm = ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
 
         progressBar = binding.progressBar
         recyclerTrack = binding.trackRecycler
