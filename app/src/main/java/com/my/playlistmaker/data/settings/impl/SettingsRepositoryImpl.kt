@@ -1,6 +1,7 @@
 package com.my.playlistmaker.data.settings.impl
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import com.my.playlistmaker.app.App
@@ -8,12 +9,10 @@ import com.my.playlistmaker.app.SETTING_EXAMPLE_PREFERENCES
 import com.my.playlistmaker.app.SWITCH_KEY
 import com.my.playlistmaker.data.settings.SettingsRepository
 
-class SettingsRepositoryImpl(private val context: Context) : SettingsRepository {
-
-    val sharedPrefs = context.getSharedPreferences(
-        SETTING_EXAMPLE_PREFERENCES,
-        AppCompatActivity.MODE_PRIVATE
-    )
+class SettingsRepositoryImpl(
+    private val context: Context,
+    private val sharedPrefs: SharedPreferences
+) : SettingsRepository {
 
     fun themeSwitcher(): Boolean {
         return when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {

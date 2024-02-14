@@ -1,5 +1,9 @@
 package com.my.playlistmaker.di
 
+import android.app.Application
+import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.my.playlistmaker.app.SETTING_EXAMPLE_PREFERENCES
 import com.my.playlistmaker.data.api.NetworkClient
 import com.my.playlistmaker.data.api.TracksRepository
 import com.my.playlistmaker.data.api.impl.RetrofitNetworkClient
@@ -10,6 +14,7 @@ import com.my.playlistmaker.data.settings.SettingsRepository
 import com.my.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.my.playlistmaker.data.sharing.SharingRepository
 import com.my.playlistmaker.data.sharing.impl.SharingRepositoryImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -19,7 +24,7 @@ val dataModule = module {
     }
 
     single<SettingsRepository> {
-        SettingsRepositoryImpl(get())
+        SettingsRepositoryImpl(get(), get())
     }
 
     single<SearchHistoryRepository> {
@@ -34,5 +39,12 @@ val dataModule = module {
         RetrofitNetworkClient(get())
     }
 
+    single<SharedPreferences>{
+        androidContext().getSharedPreferences(SETTING_EXAMPLE_PREFERENCES, Application.MODE_PRIVATE)
+    }
+
+    single<Gson>{
+        Gson()
+    }
 
 }

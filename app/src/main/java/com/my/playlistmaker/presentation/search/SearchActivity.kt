@@ -49,6 +49,16 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+        adapter = TrackAdapter(trackList, itemClickListener, this)
+        recyclerTrack.layoutManager = LinearLayoutManager(this)
+        recyclerTrack.adapter = adapter
+
+        historyList.addAll(vm.getHistoryList())
+        val historyAdapter = TrackAdapter(historyList, itemClickListener, this)
+        historyRecycler.layoutManager = LinearLayoutManager(this)
+        historyRecycler.adapter = historyAdapter
+        historyLayoutVisibility()
+
         vm.trackListLiveData.observe(this, Observer {
             when (it) {
                 is SearchState.Loading -> {
@@ -66,17 +76,8 @@ class SearchActivity : AppCompatActivity() {
         vm.historyListLiveData.observe(this, Observer {
             historyList.clear()
             historyList.addAll(it)
+            historyAdapter.notifyDataSetChanged()
         })
-
-        adapter = TrackAdapter(trackList, itemClickListener, this)
-        recyclerTrack.layoutManager = LinearLayoutManager(this)
-        recyclerTrack.adapter = adapter
-
-        historyList.addAll(vm.getHistoryList())
-        val historyAdapter = TrackAdapter(historyList, itemClickListener, this)
-        historyRecycler.layoutManager = LinearLayoutManager(this)
-        historyRecycler.adapter = historyAdapter
-        historyLayoutVisibility()
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

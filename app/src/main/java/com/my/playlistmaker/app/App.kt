@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.my.playlistmaker.di.appModule
 import com.my.playlistmaker.di.dataModule
 import com.my.playlistmaker.di.domainModule
+import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,17 +16,16 @@ const val SWITCH_KEY = "KEY_FOR_SWITCH"
 class App : Application() {
 
     private var darkTheme = false
-    lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
-        sharedPrefs = getSharedPreferences(SETTING_EXAMPLE_PREFERENCES, Application.MODE_PRIVATE)
-        darkTheme = sharedPrefs.getBoolean(SWITCH_KEY, darkTheme)
-        switchTheme(darkTheme)
         startKoin{
             androidContext(this@App)
             modules(listOf(appModule, dataModule, domainModule))
         }
+        val sharedPrefs: SharedPreferences = getKoin().get()
+        darkTheme = sharedPrefs.getBoolean(SWITCH_KEY, darkTheme)
+        switchTheme(darkTheme)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
@@ -37,7 +37,7 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        sharedPrefs = getSharedPreferences(SETTING_EXAMPLE_PREFERENCES, Application.MODE_PRIVATE)
+        val sharedPrefs: SharedPreferences = getKoin().get()
         sharedPrefs.edit()
             .putBoolean(SWITCH_KEY, darkTheme)
             .apply()

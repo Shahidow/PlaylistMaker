@@ -12,11 +12,13 @@ import com.my.playlistmaker.Track
 import com.my.playlistmaker.databinding.ActivityPlayerBinding
 import com.my.playlistmaker.presentation.player.mapper.trackMapper
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
 class PlayerActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private val vm by viewModel<PlayerViewModel>()
+    private val gson: Gson by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +26,7 @@ class PlayerActivity() : AppCompatActivity() {
         setContentView(binding.root)
 
         val trackForPlayer = trackMapper.map(
-            Gson().fromJson(
+            gson.fromJson(
                 intent.getStringExtra("trackForPlayer"),
                 Track::class.java
             )
