@@ -17,4 +17,6 @@
     <string name="refresh">Обновить</string>
     <string name="clearHistory">Очистить историю</string>
     <string name="searchHistory">Вы искали</string>
+    <string name="libraryPlayListEmpty">Вы не создали ни одного плейлиста</string>
+    <string name="libraryFavoritesEmpty">Ваша медиатека пуста</string>
 </resources>
