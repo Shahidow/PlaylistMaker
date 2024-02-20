@@ -16,6 +16,8 @@ import com.google.gson.Gson
 import com.my.playlistmaker.R
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.presentation.player.PlayerActivity
+import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.getKoin
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -78,11 +80,12 @@ class TrackAdapter(
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+        val gson: Gson = getKoin().get()
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 val libraryIntent = Intent(context, PlayerActivity::class.java)
-                libraryIntent.putExtra("trackForPlayer", Gson().toJson(trackList[position]))
+                libraryIntent.putExtra("trackForPlayer", gson.toJson(trackList[position]))
                 clickListener.onItemClicked(trackList[position])
                 context.startActivity(libraryIntent)
             }

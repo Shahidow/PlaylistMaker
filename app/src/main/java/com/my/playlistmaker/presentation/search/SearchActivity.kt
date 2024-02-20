@@ -10,15 +10,15 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.playlistmaker.*
 import com.my.playlistmaker.databinding.ActivitySearchBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var vm: SearchViewModel
+    private val vm by viewModel<SearchViewModel>()
     private lateinit var progressBar: ProgressBar
     private lateinit var noResults: LinearLayout
     private lateinit var noInternet: LinearLayout
@@ -34,8 +34,6 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        vm = ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
-
         progressBar = binding.progressBar
         recyclerTrack = binding.trackRecycler
         noResults = binding.noresults
@@ -50,6 +48,16 @@ class SearchActivity : AppCompatActivity() {
                 vm.addTrackToHistory(track)
             }
         }
+
+        adapter = TrackAdapter(trackList, itemClickListener, this)
+        recyclerTrack.layoutManager = LinearLayoutManager(this)
+        recyclerTrack.adapter = adapter
+
+        historyList.addAll(vm.getHistoryList())
+        val historyAdapter = TrackAdapter(historyList, itemClickListener, this)
+        historyRecycler.layoutManager = LinearLayoutManager(this)
+        historyRecycler.adapter = historyAdapter
+        historyLayoutVisibility()
 
         vm.trackListLiveData.observe(this, Observer {
             when (it) {
@@ -68,17 +76,8 @@ class SearchActivity : AppCompatActivity() {
         vm.historyListLiveData.observe(this, Observer {
             historyList.clear()
             historyList.addAll(it)
+            historyAdapter.notifyDataSetChanged()
         })
-
-        adapter = TrackAdapter(trackList, itemClickListener, this)
-        recyclerTrack.layoutManager = LinearLayoutManager(this)
-        recyclerTrack.adapter = adapter
-
-        historyList.addAll(vm.getHistoryList())
-        val historyAdapter = TrackAdapter(historyList, itemClickListener, this)
-        historyRecycler.layoutManager = LinearLayoutManager(this)
-        historyRecycler.adapter = historyAdapter
-        historyLayoutVisibility()
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.data.search.SearchHistoryRepository
+import org.koin.java.KoinJavaComponent.getKoin
 
 const val HISTORY_EXAMPLE_PREFERENCES = "history_example_preferences"
 const val HISTORY_KEY = "key_for_history_switch"
@@ -41,7 +42,8 @@ class SearchHistoryRepositoryImpl(context: Context): SearchHistoryRepository {
 
     private fun getSharedPrefs(): Array<Track> {
         val json = historySharedPrefs.getString(HISTORY_KEY, null) ?: return emptyArray()
-        return Gson().fromJson(json, Array<Track>::class.java)
+        val gson: Gson = getKoin().get()
+        return gson.fromJson(json, Array<Track>::class.java)
     }
 
     private fun setSharedPrefs(list: List<Track>) {
