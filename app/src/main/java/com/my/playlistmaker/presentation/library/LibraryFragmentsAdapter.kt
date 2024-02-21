@@ -15,8 +15,8 @@ class LibraryFragmentsAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> NumberFragment.newInstance(position + 1)
-            else -> NumberFragment.newInstance(position + 1)
+            0 -> FavoritesFragment.newInstance()
+            else -> PlaylistFragment.newInstance()
         }
     }
 

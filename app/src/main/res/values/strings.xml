@@ -19,4 +19,6 @@
     <string name="searchHistory">Вы искали</string>
     <string name="libraryPlayListEmpty">Вы не создали ни одного плейлиста</string>
     <string name="libraryFavoritesEmpty">Ваша медиатека пуста</string>
+    <string name="favorites">Избранные треки</string>
+    <string name="playlist">Плейлисты</string>
 </resources>
