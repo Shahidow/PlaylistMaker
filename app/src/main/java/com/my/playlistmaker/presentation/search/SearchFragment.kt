@@ -1,22 +1,25 @@
 package com.my.playlistmaker.presentation.search
 
+import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.lifecycle.Observer
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.my.playlistmaker.*
-import com.my.playlistmaker.databinding.ActivitySearchBinding
+import com.my.playlistmaker.Track
+import com.my.playlistmaker.databinding.FragmentSearchBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment: Fragment() {
 
     private val vm by viewModel<SearchViewModel>()
     private lateinit var progressBar: ProgressBar
@@ -24,15 +27,22 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noInternet: LinearLayout
     private lateinit var historyLayout: LinearLayout
     private lateinit var recyclerTrack: RecyclerView
-    private lateinit var binding: ActivitySearchBinding
     private lateinit var adapter: TrackAdapter
     private val trackList = ArrayList<Track>()
+    private lateinit var binding: FragmentSearchBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         progressBar = binding.progressBar
         recyclerTrack = binding.trackRecycler
@@ -49,17 +59,17 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        adapter = TrackAdapter(trackList, itemClickListener, this)
-        recyclerTrack.layoutManager = LinearLayoutManager(this)
+        adapter = TrackAdapter(trackList, itemClickListener, requireContext())
+        recyclerTrack.layoutManager = LinearLayoutManager(requireContext())
         recyclerTrack.adapter = adapter
 
         historyList.addAll(vm.getHistoryList())
-        val historyAdapter = TrackAdapter(historyList, itemClickListener, this)
-        historyRecycler.layoutManager = LinearLayoutManager(this)
+        val historyAdapter = TrackAdapter(historyList, itemClickListener, requireContext())
+        historyRecycler.layoutManager = LinearLayoutManager(requireContext())
         historyRecycler.adapter = historyAdapter
         historyLayoutVisibility()
 
-        vm.trackListLiveData.observe(this, Observer {
+        vm.trackListLiveData.observe(this.viewLifecycleOwner) {
             when (it) {
                 is SearchState.Loading -> {
                     showLoading()
@@ -71,13 +81,13 @@ class SearchActivity : AppCompatActivity() {
                     showError(it.errorMessage)
                 }
             }
-        })
+        }
 
-        vm.historyListLiveData.observe(this, Observer {
+        vm.historyListLiveData.observe(this.viewLifecycleOwner) {
             historyList.clear()
             historyList.addAll(it)
             historyAdapter.notifyDataSetChanged()
-        })
+        }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -101,10 +111,6 @@ class SearchActivity : AppCompatActivity() {
             vm.searchTracks(inputEditText.text.toString())
         }
 
-        binding.backFromSearch.setOnClickListener {
-            finish()
-        }
-
         binding.clearIcon.setOnClickListener {
             trackList.clear()
             noInternet.visibility = View.GONE
@@ -113,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.setText("")
             historyLayoutVisibility()
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
 

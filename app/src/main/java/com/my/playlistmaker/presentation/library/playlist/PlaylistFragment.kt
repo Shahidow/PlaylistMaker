@@ -1,4 +1,4 @@
-package com.my.playlistmaker.presentation.library
+package com.my.playlistmaker.presentation.library.playlist
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.my.playlistmaker.presentation.library
+package com.my.playlistmaker.presentation.library.favorites
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
