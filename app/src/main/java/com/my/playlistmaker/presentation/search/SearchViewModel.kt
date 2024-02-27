@@ -22,7 +22,7 @@ class SearchViewModel(
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchTracks(searchText) }
     private var trackList = MutableLiveData<SearchState>()
-    val trackListLiveData : LiveData<SearchState> = trackList
+    val trackListLiveData: LiveData<SearchState> = trackList
     private var historyList = MutableLiveData<List<Track>>()
     val historyListLiveData: LiveData<List<Track>> = historyList
 
@@ -39,14 +39,13 @@ class SearchViewModel(
         super.onCleared()
     }
 
-    fun searchTracks(expression: String){
+    fun searchTracks(expression: String) {
         trackList.postValue(SearchState.Loading)
-        tracksInteractor.searchTracks(expression, object: TracksInteractor.TracksConsumer {
+        tracksInteractor.searchTracks(expression, object : TracksInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                 if (foundTracks != null) {
                     trackList.postValue(SearchState.Content(foundTracks))
-                }
-                else if (errorMessage != null) {
+                } else if (errorMessage != null) {
                     trackList.postValue(SearchState.Error(errorMessage))
                 }
             }
@@ -61,7 +60,6 @@ class SearchViewModel(
     fun getHistoryList(): List<Track> {
         return searchHistoryInteractor.getList()
     }
-
 
 
     fun clearHistoryList() {

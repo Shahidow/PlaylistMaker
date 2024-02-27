@@ -152,4 +152,18 @@
     <style name="PlayerTheme">
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="LibraryTabLayout">
+        <item name="android:background">@color/white</item>
+        <item name="tabIndicatorColor">@color/blackPM</item>
+        <item name="tabSelectedTextColor">@color/blackPM</item>
+    </style>
+
+    <style name="LibraryTabLayoutText">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="tabTextColor">@color/blackPM</item>
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+    </style>
 </resources>
