@@ -32,8 +32,7 @@
             android:fontFamily="@font/ys_display_regular"
             android:paddingHorizontal="16dp"
             android:text="@string/theme"
-            android:textSize="16sp"
-            tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/share"
