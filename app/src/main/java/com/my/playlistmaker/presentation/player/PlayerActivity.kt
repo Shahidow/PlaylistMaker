@@ -2,6 +2,7 @@ package com.my.playlistmaker.presentation.player
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -35,14 +36,13 @@ class PlayerActivity() : AppCompatActivity() {
         val trackURL = trackForPlayer.previewUrl
 
         vm.playerStateLiveData.observe(this, Observer {
-            when (it) {
-                PlayerState.STATE_PLAYING -> binding.playButton.setImageResource(R.drawable.button_pause)
+            binding.playButton.isEnabled = it.isPlayButtonEnabled
+            when (it.buttonImage) {
+                "PAUSE" -> binding.playButton.setImageResource(R.drawable.button_pause)
                 else -> binding.playButton.setImageResource(R.drawable.button_play)
             }
-        })
-
-        vm.playerTimeLiveData.observe(this, Observer {
-            binding.playerTime.text = it
+            binding.playerTime.text = it.progress
+            Log.i("123", "${it.progress}, ${it.buttonImage}")
         })
 
         vm.onCreate(trackURL)
