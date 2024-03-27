@@ -1,4 +1,4 @@
-package com.my.playlistmaker.presentation.library
+package com.my.playlistmaker.presentation.library.favorites
 
 import androidx.lifecycle.ViewModel
 

@@ -168,4 +168,9 @@
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/ys_display_medium</item>
     </style>
+
+    <style name="BottomNav">
+        <item name="android:background">@color/blackPM</item>
+    </style>
+
 </resources>

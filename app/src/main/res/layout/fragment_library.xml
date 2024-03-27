@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/App"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/App">
+    tools:context="com.my.playlistmaker.presentation.library.LibraryFragment">
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            style="@style/BackButton"
-            android:id="@+id/backFromLibrary"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/back"
-            app:icon="@drawable/back"
-            app:iconGravity="start"
-            app:iconPadding="24dp"/>
+        android:layout_height="48dp">
+
         <TextView
             style="@style/TextMenu"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="60dp"
-            android:text="@string/library"/>
+            android:layout_marginStart="16dp"
+            android:text="@string/library" />
     </FrameLayout>
+
     <com.google.android.material.tabs.TabLayout
-        style="@style/LibraryTabLayout"
         android:id="@+id/tabLayout"
+        style="@style/LibraryTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextAppearance="@style/LibraryTabLayoutText"/>
+        app:tabTextAppearance="@style/LibraryTabLayoutText" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
