@@ -16,6 +16,10 @@ import com.google.gson.Gson
 import com.my.playlistmaker.R
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.presentation.player.PlayerActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.getKoin
 import java.text.SimpleDateFormat
@@ -28,7 +32,6 @@ class TrackAdapter(
 ) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -63,9 +66,13 @@ class TrackAdapter(
 
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            coroutineScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
