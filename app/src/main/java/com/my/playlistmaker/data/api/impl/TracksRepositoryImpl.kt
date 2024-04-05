@@ -1,5 +1,7 @@
 package com.my.playlistmaker.data.api.impl
 
+import android.content.Context
+import com.my.playlistmaker.R
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.data.api.NetworkClient
 import com.my.playlistmaker.data.api.TracksRepository
@@ -8,19 +10,21 @@ import com.my.playlistmaker.domain.api.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl(private val networkClient: NetworkClient, private val context: Context) : TracksRepository {
+
+    private val appContext = context.applicationContext
 
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
         when (response.resultCode) {
             -1 -> {
-                emit(Resource.Error("Проверьте подключение к интернету"))
+                emit(Resource.Error(appContext.getString(R.string.internetError)))
             }
             200 -> {
                 emit(Resource.Success((response as TracksSearchResponse).results))
             }
             else -> {
-                emit(Resource.Error("Ошибка сервера"))
+                emit(Resource.Error(appContext.getString(R.string.serverError)))
             }
         }
 

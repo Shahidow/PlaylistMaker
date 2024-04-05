@@ -64,9 +64,8 @@ class TrackAdapter(
         }
     }
 
-    private fun clickDebounce(): Boolean {
+    private fun clickDebounce(coroutineScope:CoroutineScope): Boolean {
         val current = isClickAllowed
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
         if (isClickAllowed) {
             isClickAllowed = false
             coroutineScope.launch {
@@ -87,10 +86,11 @@ class TrackAdapter(
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
         val gson: Gson = getKoin().get()
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
-            if (clickDebounce()) {
+            if (clickDebounce(coroutineScope)) {
                 val libraryIntent = Intent(context, PlayerActivity::class.java)
                 libraryIntent.putExtra("trackForPlayer", gson.toJson(trackList[position]))
                 clickListener.onItemClicked(trackList[position])

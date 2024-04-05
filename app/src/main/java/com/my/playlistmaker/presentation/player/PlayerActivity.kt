@@ -42,7 +42,6 @@ class PlayerActivity() : AppCompatActivity() {
                 else -> binding.playButton.setImageResource(R.drawable.button_play)
             }
             binding.playerTime.text = it.progress
-            Log.i("123", "${it.progress}, ${it.buttonImage}")
         })
 
         vm.onCreate(trackURL)

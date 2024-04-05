@@ -23,6 +23,7 @@ class PlayerViewModel : ViewModel() {
     private var playerState = MutableLiveData<PlayerState>(PlayerState.Default())
     val playerStateLiveData: LiveData<PlayerState> = playerState
     private var timerJob: Job? = null
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     fun onCreate(trackURL: String) {
         mediaPlayer.setDataSource(trackURL)
@@ -74,8 +75,7 @@ class PlayerViewModel : ViewModel() {
     }
 
     private fun getCurrentPlayerPosition(): String {
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-            ?: "00:00"
+        return dateFormat.format(mediaPlayer.currentPosition) ?: "00:00"
     }
 
 }
