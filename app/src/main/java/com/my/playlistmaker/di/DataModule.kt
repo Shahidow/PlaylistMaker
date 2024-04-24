@@ -2,12 +2,16 @@ package com.my.playlistmaker.di
 
 import android.app.Application
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.google.gson.Gson
 import com.my.playlistmaker.app.SETTING_EXAMPLE_PREFERENCES
 import com.my.playlistmaker.data.api.NetworkClient
 import com.my.playlistmaker.data.api.TracksRepository
 import com.my.playlistmaker.data.api.impl.RetrofitNetworkClient
 import com.my.playlistmaker.data.api.impl.TracksRepositoryImpl
+import com.my.playlistmaker.data.db.AppDatabase
+import com.my.playlistmaker.data.db.FavoritesRepository
+import com.my.playlistmaker.data.db.impl.FavoritesRepositoryImpl
 import com.my.playlistmaker.data.search.SearchHistoryRepository
 import com.my.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.my.playlistmaker.data.settings.SettingsRepository
@@ -19,6 +23,15 @@ import org.koin.dsl.module
 
 val dataModule = module {
 
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
+    }
+
     single<SharingRepository> {
         SharingRepositoryImpl(get())
     }
@@ -28,11 +41,11 @@ val dataModule = module {
     }
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get())
+        SearchHistoryRepositoryImpl(get(), get())
     }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(get(), get())
+        TracksRepositoryImpl(get(), get(), get())
     }
 
     single<NetworkClient> {

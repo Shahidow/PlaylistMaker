@@ -7,13 +7,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.my.playlistmaker.Track
+import com.my.playlistmaker.domain.db.FavoritesInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel(private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
     companion object {
         private const val DELAY = 300L
@@ -24,6 +26,20 @@ class PlayerViewModel : ViewModel() {
     val playerStateLiveData: LiveData<PlayerState> = playerState
     private var timerJob: Job? = null
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+    private val isFavorite = MutableLiveData<Boolean>()
+    val favoriteLiveData: LiveData<Boolean> = isFavorite
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+                if (track.isFavorite) {
+                    favoritesInteractor.deleteTrack(track)
+                    isFavorite.postValue(false)
+                } else {
+                    favoritesInteractor.setTrack(track)
+                    isFavorite.postValue(true)
+                }
+        }
+    }
 
     fun onCreate(trackURL: String) {
         mediaPlayer.setDataSource(trackURL)

@@ -19,11 +19,11 @@ val appModule = module {
     }
 
     viewModel<PlayerViewModel> {
-        PlayerViewModel()
+        PlayerViewModel(get())
     }
 
     viewModel<FavoritesViewModel> {
-        FavoritesViewModel()
+        FavoritesViewModel(get())
     }
 
     viewModel<PlaylistViewModel> {

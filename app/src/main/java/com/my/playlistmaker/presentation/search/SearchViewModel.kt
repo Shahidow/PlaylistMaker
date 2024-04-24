@@ -67,11 +67,17 @@ class SearchViewModel(
 
     fun addTrackToHistory(track: Track) {
         searchHistoryInteractor.addTrack(track)
-        historyList.postValue(getHistoryList())
+        getHistoryList()
     }
 
-    fun getHistoryList(): List<Track> {
-        return searchHistoryInteractor.getList()
+    fun getHistoryList() {
+        viewModelScope.launch {
+            searchHistoryInteractor
+                .getList()
+                .collect { trackList ->
+                    historyList.postValue(trackList)
+                }
+        }
     }
 
 

@@ -26,13 +26,11 @@ class PlayerActivity() : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val trackForPlayer = trackMapper.map(
-            gson.fromJson(
-                intent.getStringExtra("trackForPlayer"),
-                Track::class.java
-            )
+        val track = gson.fromJson(
+            intent.getStringExtra("trackForPlayer"),
+            Track::class.java
         )
-
+        val trackForPlayer = trackMapper.map(track)
         val trackURL = trackForPlayer.previewUrl
 
         vm.playerStateLiveData.observe(this, Observer {
@@ -44,6 +42,12 @@ class PlayerActivity() : AppCompatActivity() {
             binding.playerTime.text = it.progress
         })
 
+        vm.favoriteLiveData.observe( this, Observer {
+            track.isFavorite = it
+            favoritesButtonImg(it)
+        })
+
+        favoritesButtonImg(track.isFavorite)
         vm.onCreate(trackURL)
         binding.playerTrackName.text = trackForPlayer.trackName
         binding.playerArtistName.text = trackForPlayer.artistName
@@ -68,6 +72,19 @@ class PlayerActivity() : AppCompatActivity() {
         binding.playButton.setOnClickListener {
             vm.playbackControl()
         }
+
+        binding.favoriteButton.setOnClickListener {
+            vm.onFavoriteClicked(track)
+        }
+    }
+
+    private fun favoritesButtonImg(isFavorite: Boolean) {
+        if(isFavorite) {
+            binding.favoriteButton.setImageResource(R.drawable.favorites)
+        } else {
+            binding.favoriteButton.setImageResource(R.drawable.favorite)
+        }
+
     }
 
     override fun onPause() {
