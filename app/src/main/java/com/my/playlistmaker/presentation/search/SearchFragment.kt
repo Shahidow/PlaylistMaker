@@ -114,6 +114,7 @@ class SearchFragment : Fragment() {
         }
 
         binding.clearIcon.setOnClickListener {
+            vm.clearSearchText()
             trackList.clear()
             noInternet.visibility = View.GONE
             noResults.visibility = View.GONE
@@ -174,5 +175,10 @@ class SearchFragment : Fragment() {
         if (historyList.isNotEmpty() && noInternet.visibility == View.GONE && noResults.visibility == View.GONE && recyclerTrack.visibility == View.GONE) {
             historyLayout.visibility = View.VISIBLE
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.onResume()
     }
 }

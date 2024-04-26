@@ -33,7 +33,6 @@ class SearchViewModel(
             return
         }
         searchText = text
-
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
@@ -41,8 +40,9 @@ class SearchViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    fun onResume(){
+        if(!searchText.isNullOrEmpty()) {searchTracks(searchText!!)}
+        getHistoryList()
     }
 
     fun searchTracks(expression: String) {
@@ -80,9 +80,11 @@ class SearchViewModel(
         }
     }
 
-
     fun clearHistoryList() {
         searchHistoryInteractor.clearList()
     }
 
+    fun clearSearchText(){
+        searchText = null
+    }
 }

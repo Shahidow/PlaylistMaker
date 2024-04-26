@@ -65,7 +65,6 @@ class FavoritesFragment : Fragment() {
                 adapter.notifyDataSetChanged()
                 binding!!.favoritesEmpty.visibility = View.GONE
                 recyclerTrack.visibility = View.VISIBLE
-                Log.i("123", "AAAAAAAAAAA")
             }
         }
     }

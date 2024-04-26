@@ -1,10 +1,8 @@
 package com.my.playlistmaker.data.search.impl
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.my.playlistmaker.Track
-import com.my.playlistmaker.data.api.impl.TracksSearchResponse
 import com.my.playlistmaker.data.db.AppDatabase
 import com.my.playlistmaker.data.search.SearchHistoryRepository
 import kotlinx.coroutines.flow.Flow
@@ -36,8 +34,8 @@ class SearchHistoryRepositoryImpl(context: Context, private val appDatabase: App
     override fun addTrack(track: Track) {
         val historyList = getSharedPrefs().toMutableList()
         if (historyList.isNotEmpty()) {
-            if (historyList.contains(track)) {
-                historyList.remove(track)
+            if (historyList.any{it.trackId==track.trackId}) {
+                historyList.removeIf{it.trackId==track.trackId}
             }
             if (historyList.size > SEARCH_HISTORY_LIST_SIZE) {
                 historyList.removeLast()
