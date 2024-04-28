@@ -2,6 +2,7 @@ package com.my.playlistmaker.presentation.player
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -25,26 +26,28 @@ class PlayerActivity() : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val trackForPlayer = trackMapper.map(
-            gson.fromJson(
-                intent.getStringExtra("trackForPlayer"),
-                Track::class.java
-            )
+        val track = gson.fromJson(
+            intent.getStringExtra("trackForPlayer"),
+            Track::class.java
         )
-
+        val trackForPlayer = trackMapper.map(track)
         val trackURL = trackForPlayer.previewUrl
 
         vm.playerStateLiveData.observe(this, Observer {
-            when (it) {
-                PlayerState.STATE_PLAYING -> binding.playButton.setImageResource(R.drawable.button_pause)
+            binding.playButton.isEnabled = it.isPlayButtonEnabled
+            when (it.buttonImage) {
+                "PAUSE" -> binding.playButton.setImageResource(R.drawable.button_pause)
                 else -> binding.playButton.setImageResource(R.drawable.button_play)
             }
+            binding.playerTime.text = it.progress
         })
 
-        vm.playerTimeLiveData.observe(this, Observer {
-            binding.playerTime.text = it
+        vm.favoriteLiveData.observe( this, Observer {
+            track.isFavorite = it
+            favoritesButtonImg(it)
         })
 
+        favoritesButtonImg(track.isFavorite)
         vm.onCreate(trackURL)
         binding.playerTrackName.text = trackForPlayer.trackName
         binding.playerArtistName.text = trackForPlayer.artistName
@@ -69,6 +72,19 @@ class PlayerActivity() : AppCompatActivity() {
         binding.playButton.setOnClickListener {
             vm.playbackControl()
         }
+
+        binding.favoriteButton.setOnClickListener {
+            vm.onFavoriteClicked(track)
+        }
+    }
+
+    private fun favoritesButtonImg(isFavorite: Boolean) {
+        if(isFavorite) {
+            binding.favoriteButton.setImageResource(R.drawable.favorites)
+        } else {
+            binding.favoriteButton.setImageResource(R.drawable.favorite)
+        }
+
     }
 
     override fun onPause() {

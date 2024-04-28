@@ -6,39 +6,63 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.my.playlistmaker.Track
+import com.my.playlistmaker.domain.db.FavoritesInteractor
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel(private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
     companion object {
-        private const val DELAY = 1000L
+        private const val DELAY = 300L
     }
 
-    private val runnable = Runnable { playTimer() }
-    private var playTime = 1
-    private val handler = Handler(Looper.getMainLooper())
     private var mediaPlayer = MediaPlayer()
-    private var playerState = MutableLiveData<PlayerState>()
+    private var playerState = MutableLiveData<PlayerState>(PlayerState.Default())
     val playerStateLiveData: LiveData<PlayerState> = playerState
-    private var playerTime = MutableLiveData<String>()
-    val playerTimeLiveData: LiveData<String> = playerTime
+    private var timerJob: Job? = null
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+    private val isFavorite = MutableLiveData<Boolean>()
+    val favoriteLiveData: LiveData<Boolean> = isFavorite
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+                if (track.isFavorite) {
+                    favoritesInteractor.deleteTrack(track)
+                    isFavorite.postValue(false)
+                } else {
+                    favoritesInteractor.setTrack(track)
+                    isFavorite.postValue(true)
+                }
+        }
+    }
 
     fun onCreate(trackURL: String) {
         mediaPlayer.setDataSource(trackURL)
         mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener { playerState.postValue(PlayerState.STATE_PREPARED) }
-        mediaPlayer.setOnCompletionListener { playerState.postValue(PlayerState.STATE_PREPARED) }
+        mediaPlayer.setOnPreparedListener { playerState.postValue(PlayerState.Prepared()) }
+        mediaPlayer.setOnCompletionListener {
+            playerState.postValue(PlayerState.Prepared())
+            timerJob?.cancel()
+        }
     }
 
     fun onDestroy() {
+        mediaPlayer.stop()
         mediaPlayer.release()
+        playerState.value = PlayerState.Default()
     }
 
     fun playbackControl() {
         when (playerState.value) {
-            PlayerState.STATE_PLAYING -> {
+            is PlayerState.Playing -> {
                 pause()
             }
-            PlayerState.STATE_PREPARED, PlayerState.STATE_PAUSED -> {
+            is PlayerState.Prepared, is PlayerState.Paused -> {
                 play()
             }
             else -> {}
@@ -47,37 +71,27 @@ class PlayerViewModel : ViewModel() {
 
     fun play() {
         mediaPlayer.start()
-        playerState.postValue(PlayerState.STATE_PLAYING)
-        timerDebounce()
+        playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+        playTimer()
     }
 
     fun pause() {
         mediaPlayer.pause()
-        playerState.postValue(PlayerState.STATE_PAUSED)
-        handler.removeCallbacks(runnable)
-    }
-
-    private fun timerDebounce() {
-        handler.postDelayed(runnable, DELAY)
+        timerJob?.cancel()
+        playerState.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
     }
 
     private fun playTimer() {
-        playerTime.postValue(String.format("%02d:%02d", playTime / 60, playTime % 60))
-        when (playerState.value) {
-            PlayerState.STATE_PLAYING -> {
-                playTime++
-                timerDebounce()
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(DELAY)
+                playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
             }
-            PlayerState.STATE_PREPARED -> {
-                clearTimer()
-            }
-            else -> {}
         }
     }
 
-    private fun clearTimer() {
-        playerTime.postValue("00:00")
-        playTime = 1
-        handler.removeCallbacks(runnable)
+    private fun getCurrentPlayerPosition(): String {
+        return dateFormat.format(mediaPlayer.currentPosition) ?: "00:00"
     }
+
 }

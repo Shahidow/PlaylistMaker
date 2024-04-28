@@ -8,6 +8,7 @@ import java.util.*
 object trackMapper {
     fun map(track: Track): TrackInfo {
         return TrackInfo(
+            isFavorite = track.isFavorite,
             trackName = track.trackName,
             artistName = track.artistName,
             trackTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis),

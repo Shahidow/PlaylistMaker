@@ -1,6 +1,7 @@
 package com.my.playlistmaker
 
 data class Track(
+    var isFavorite: Boolean = false,
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Long, // Продолжительность трека

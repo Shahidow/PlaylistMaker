@@ -21,4 +21,6 @@
     <string name="libraryFavoritesEmpty">Ваша медиатека пуста</string>
     <string name="favorites">Избранные треки</string>
     <string name="playlist">Плейлисты</string>
+    <string name="internetError">Проверьте подключение к интернету</string>
+    <string name="serverError">Ошибка сервера</string>
 </resources>

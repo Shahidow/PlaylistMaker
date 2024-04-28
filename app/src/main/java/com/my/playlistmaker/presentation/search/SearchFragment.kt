@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import com.my.playlistmaker.Track
 import com.my.playlistmaker.databinding.FragmentSearchBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
 
     private val vm by viewModel<SearchViewModel>()
     private lateinit var progressBar: ProgressBar
@@ -30,6 +31,7 @@ class SearchFragment: Fragment() {
     private lateinit var adapter: TrackAdapter
     private val trackList = ArrayList<Track>()
     private lateinit var binding: FragmentSearchBinding
+    private val historyList: ArrayList<Track> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +53,6 @@ class SearchFragment: Fragment() {
         historyLayout = binding.searchHistory
         val inputEditText = binding.inputEditText
         val historyRecycler = binding.historyRecycler
-        val historyList: ArrayList<Track> = arrayListOf()
 
         val itemClickListener: RecyclerViewClickListener = object : RecyclerViewClickListener {
             override fun onItemClicked(track: Track) {
@@ -63,11 +64,9 @@ class SearchFragment: Fragment() {
         recyclerTrack.layoutManager = LinearLayoutManager(requireContext())
         recyclerTrack.adapter = adapter
 
-        historyList.addAll(vm.getHistoryList())
         val historyAdapter = TrackAdapter(historyList, itemClickListener, requireContext())
         historyRecycler.layoutManager = LinearLayoutManager(requireContext())
         historyRecycler.adapter = historyAdapter
-        historyLayoutVisibility()
 
         vm.trackListLiveData.observe(this.viewLifecycleOwner) {
             when (it) {
@@ -87,7 +86,10 @@ class SearchFragment: Fragment() {
             historyList.clear()
             historyList.addAll(it)
             historyAdapter.notifyDataSetChanged()
+            historyLayoutVisibility()
         }
+
+        vm.getHistoryList()
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -112,9 +114,11 @@ class SearchFragment: Fragment() {
         }
 
         binding.clearIcon.setOnClickListener {
+            vm.clearSearchText()
             trackList.clear()
             noInternet.visibility = View.GONE
             noResults.visibility = View.GONE
+            recyclerTrack.visibility = View.GONE
             adapter.notifyDataSetChanged()
             inputEditText.setText("")
             historyLayoutVisibility()
@@ -168,8 +172,13 @@ class SearchFragment: Fragment() {
     }
 
     private fun historyLayoutVisibility() {
-        if (vm.getHistoryList().isNotEmpty()) {
+        if (historyList.isNotEmpty() && noInternet.visibility == View.GONE && noResults.visibility == View.GONE && recyclerTrack.visibility == View.GONE) {
             historyLayout.visibility = View.VISIBLE
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.onResume()
     }
 }

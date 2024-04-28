@@ -1,25 +1,38 @@
 package com.my.playlistmaker.data.api.impl
 
+import android.content.Context
+import com.my.playlistmaker.R
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.data.api.NetworkClient
 import com.my.playlistmaker.data.api.TracksRepository
 import com.my.playlistmaker.data.api.TracksSearchRequest
+import com.my.playlistmaker.data.db.AppDatabase
 import com.my.playlistmaker.domain.api.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl(private val networkClient: NetworkClient, private val context: Context, private val appDatabase: AppDatabase) : TracksRepository {
 
-    override fun searchTracks(expression: String): Resource<List<Track>> {
+    private val appContext = context.applicationContext
+
+    override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
-        return when (response.resultCode) {
+        when (response.resultCode) {
             -1 -> {
-                Resource.Error("Проверьте подключение к интернету")
+                emit(Resource.Error(appContext.getString(R.string.internetError)))
             }
             200 -> {
-                Resource.Success((response as TracksSearchResponse).results)
+                val trackList = (response as TracksSearchResponse).results
+                val idList = appDatabase.trackDao().getItem()
+                for(track in trackList) {
+                    track.isFavorite = idList.contains(track.trackId)
+                }
+                emit(Resource.Success(trackList))
             }
             else -> {
-                Resource.Error("Ошибка сервера")
+                emit(Resource.Error(appContext.getString(R.string.serverError)))
             }
         }
+
     }
 }

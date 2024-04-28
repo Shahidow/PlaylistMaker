@@ -16,6 +16,10 @@ import com.google.gson.Gson
 import com.my.playlistmaker.R
 import com.my.playlistmaker.Track
 import com.my.playlistmaker.presentation.player.PlayerActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.getKoin
 import java.text.SimpleDateFormat
@@ -28,7 +32,6 @@ class TrackAdapter(
 ) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -61,11 +64,14 @@ class TrackAdapter(
         }
     }
 
-    private fun clickDebounce(): Boolean {
+    private fun clickDebounce(coroutineScope:CoroutineScope): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            coroutineScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
@@ -80,10 +86,11 @@ class TrackAdapter(
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
         val gson: Gson = getKoin().get()
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
-            if (clickDebounce()) {
+            if (clickDebounce(coroutineScope)) {
                 val libraryIntent = Intent(context, PlayerActivity::class.java)
                 libraryIntent.putExtra("trackForPlayer", gson.toJson(trackList[position]))
                 clickListener.onItemClicked(trackList[position])
