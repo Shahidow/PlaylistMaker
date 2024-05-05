@@ -2,7 +2,7 @@ package com.my.playlistmaker.data.api.impl
 
 import android.content.Context
 import com.my.playlistmaker.R
-import com.my.playlistmaker.Track
+import com.my.playlistmaker.domain.models.Track
 import com.my.playlistmaker.data.api.NetworkClient
 import com.my.playlistmaker.data.api.TracksRepository
 import com.my.playlistmaker.data.api.TracksSearchRequest

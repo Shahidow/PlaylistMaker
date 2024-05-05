@@ -1,16 +1,15 @@
 package com.my.playlistmaker.presentation.library.favorites
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.my.playlistmaker.Track
+import com.my.playlistmaker.R
+import com.my.playlistmaker.domain.models.Track
 import com.my.playlistmaker.databinding.FragmentFavoritesBinding
 import com.my.playlistmaker.presentation.search.RecyclerViewClickListener
 import com.my.playlistmaker.presentation.search.TrackAdapter
@@ -44,7 +43,11 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val itemClickListener: RecyclerViewClickListener = object : RecyclerViewClickListener {
-            override fun onItemClicked(track: Track) { }
+            override fun onItemClicked(track: Track) {
+                val args = Bundle()
+                args.putSerializable("track", track)
+                findNavController().navigate(R.id.action_libraryFragment_to_playerFragment, args)
+            }
         }
 
         vm.getTrackList()

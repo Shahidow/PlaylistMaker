@@ -1,4 +1,6 @@
-package com.my.playlistmaker
+package com.my.playlistmaker.domain.models
+
+import java.io.Serializable
 
 data class Track(
     var isFavorite: Boolean = false,
@@ -12,7 +14,7 @@ data class Track(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String, // Ссылка на отрывок трека
-)
+) : Serializable
 
 data class TrackResponse(
     val results: List<Track>,

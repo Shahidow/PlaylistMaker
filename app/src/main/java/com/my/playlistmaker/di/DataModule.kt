@@ -11,7 +11,9 @@ import com.my.playlistmaker.data.api.impl.RetrofitNetworkClient
 import com.my.playlistmaker.data.api.impl.TracksRepositoryImpl
 import com.my.playlistmaker.data.db.AppDatabase
 import com.my.playlistmaker.data.db.FavoritesRepository
+import com.my.playlistmaker.data.db.PlaylistRepository
 import com.my.playlistmaker.data.db.impl.FavoritesRepositoryImpl
+import com.my.playlistmaker.data.db.impl.PlaylistRepositoryImpl
 import com.my.playlistmaker.data.search.SearchHistoryRepository
 import com.my.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.my.playlistmaker.data.settings.SettingsRepository
@@ -26,6 +28,10 @@ val dataModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .build()
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get(), get())
     }
 
     single<FavoritesRepository> {
