@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "playlist_tracks_table")
-data class PlaylistTracksEntity (
+data class PlaylistTracksEntity(
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: Long,
@@ -17,4 +17,4 @@ data class PlaylistTracksEntity (
     val country: String,
     val previewUrl: String,
     val addingTime: Long,
-        )
+)

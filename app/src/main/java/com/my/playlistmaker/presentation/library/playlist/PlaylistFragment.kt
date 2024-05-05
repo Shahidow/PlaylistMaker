@@ -21,7 +21,9 @@ class PlaylistFragment : Fragment() {
     private lateinit var adapter: PlaylistAdapter
     private val playlists = ArrayList<Playlist>()
     private val vm by viewModel<PlaylistViewModel>()
-    private var binding: FragmentPlaylistBinding? = null
+    private var _binding: FragmentPlaylistBinding? = null
+    private val binding get() = _binding!!
+
 
     companion object {
         fun newInstance() = PlaylistFragment().apply {
@@ -33,12 +35,12 @@ class PlaylistFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentPlaylistBinding.inflate(inflater, container, false)
-        return binding!!.root
+    ): View {
+        _binding = FragmentPlaylistBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    @SuppressLint("CommitTransaction")
+    @SuppressLint("CommitTransaction", "NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,23 +51,23 @@ class PlaylistFragment : Fragment() {
             checkPlaylists()
         }
 
-        recyclerPlaylist = binding!!.playlistRecycler
+        recyclerPlaylist = binding.playlistRecycler
         adapter = PlaylistAdapter(playlists)
         recyclerPlaylist.layoutManager = GridLayoutManager(requireActivity().applicationContext, 2)
         recyclerPlaylist.adapter = adapter
         vm.getPlaylists()
 
-        binding?.libraryNewPlaylistButton?.setOnClickListener {
+        binding.libraryNewPlaylistButton.setOnClickListener {
             requireParentFragment().findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment)
             }
     }
 
     private fun checkPlaylists(){
-        if(playlists.isNullOrEmpty()){
-            binding?.playlistsEmpty?.visibility = View.VISIBLE
+        if(playlists.isEmpty()){
+            binding.playlistsEmpty.visibility = View.VISIBLE
             recyclerPlaylist.visibility = View.GONE
         } else {
-            binding?.playlistsEmpty?.visibility = View.GONE
+            binding.playlistsEmpty.visibility = View.GONE
             recyclerPlaylist.visibility = View.VISIBLE
         }
     }
@@ -77,7 +79,7 @@ class PlaylistFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
+        _binding = null
     }
 
 }

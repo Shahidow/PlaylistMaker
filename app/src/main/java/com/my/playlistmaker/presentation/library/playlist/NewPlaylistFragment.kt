@@ -25,7 +25,8 @@ import java.io.FileOutputStream
 
 class NewPlaylistFragment : Fragment() {
 
-    private lateinit var binding: FragmentNewPlaylistBinding
+    private var _binding: FragmentNewPlaylistBinding? = null
+    private val binding get() = _binding!!
     private val vm by viewModel<NewPlaylistViewModel>()
     private var playlistImageUri: Uri? = null
     private var playlistName: String = ""
@@ -36,7 +37,7 @@ class NewPlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
+        _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,7 +48,7 @@ class NewPlaylistFragment : Fragment() {
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
             .setNeutralButton("Отмена") { _, _ -> }
-            .setNegativeButton("Завершить") { _, _-> findNavController().navigateUp() }
+            .setNegativeButton("Завершить") { _, _ -> findNavController().navigateUp() }
 
         val imageCover = binding.editPlaylistCover
         val nameEditText = binding.editPlaylistName
@@ -72,7 +73,7 @@ class NewPlaylistFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                createPlaylistButton.isEnabled = !s.isNullOrEmpty()
+                createPlaylistButton.isEnabled = !s.toString().trim().isEmpty()
                 playlistName = s.toString()
             }
         })
@@ -89,16 +90,20 @@ class NewPlaylistFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        createPlaylistButton.setOnClickListener{
+        createPlaylistButton.setOnClickListener {
             vm.createPlaylist(playlistImageUri, playlistName, playlistDescription)
             playlistImageUri?.let { uri -> saveImageToPrivateStorage(uri) }
-            Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT)
+                .show()
             findNavController().navigateUp()
         }
     }
 
     private fun saveImageToPrivateStorage(uri: Uri) {
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "PlaylistMaker")
+        val filePath = File(
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "PlaylistMaker"
+        )
         if (!filePath.exists()) filePath.mkdirs()
         val file = File(filePath, playlistName)
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
@@ -109,11 +114,16 @@ class NewPlaylistFragment : Fragment() {
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
-    private fun checkDialog(){
-        if(playlistImageUri == null && playlistName == "" && playlistDescription == "") {
+    private fun checkDialog() {
+        if (playlistImageUri == null && playlistName == "" && playlistDescription == "") {
             findNavController().navigateUp()
         } else {
             confirmDialog.show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

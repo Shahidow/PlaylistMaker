@@ -7,8 +7,8 @@ import com.my.playlistmaker.data.db.entity.TrackEntity
 import com.my.playlistmaker.domain.models.Playlist
 
 class DbConvertors {
-    fun map(track: Track): TrackEntity {
-        return TrackEntity(
+    fun map(track: Track): TrackEntity =
+        TrackEntity(
             track.trackName,
             track.artistName,
             track.trackTimeMillis,
@@ -21,10 +21,9 @@ class DbConvertors {
             track.previewUrl,
             addingTime = System.currentTimeMillis()
         )
-    }
 
-    fun map(trackEntity: TrackEntity): Track {
-        return Track(
+    fun map(trackEntity: TrackEntity): Track =
+        Track(
             true,
             trackEntity.trackName,
             trackEntity.artistName,
@@ -37,10 +36,9 @@ class DbConvertors {
             trackEntity.country,
             trackEntity.previewUrl
         )
-    }
 
-    fun map(playlist: Playlist): PlaylistEntity {
-        return PlaylistEntity(
+    fun map(playlist: Playlist): PlaylistEntity =
+        PlaylistEntity(
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
@@ -48,10 +46,9 @@ class DbConvertors {
             playlist.trackList,
             playlist.amountOfTracks
         )
-    }
 
-    fun map(playlistEntity: PlaylistEntity): Playlist {
-        return Playlist(
+    fun map(playlistEntity: PlaylistEntity): Playlist =
+        Playlist(
             playlistEntity.playlistId,
             playlistEntity.playlistName,
             playlistEntity.playlistDescription,
@@ -59,10 +56,9 @@ class DbConvertors {
             playlistEntity.trackList,
             playlistEntity.amountOfTracks
         )
-    }
 
-    fun mapToPlaylistTrack(track: Track): PlaylistTracksEntity {
-        return PlaylistTracksEntity(
+    fun mapToPlaylistTrack(track: Track): PlaylistTracksEntity =
+        PlaylistTracksEntity(
             track.trackName,
             track.artistName,
             track.trackTimeMillis,
@@ -75,10 +71,9 @@ class DbConvertors {
             track.previewUrl,
             addingTime = System.currentTimeMillis()
         )
-    }
 
-    fun mapToTrack(playlistTracksEntity: PlaylistTracksEntity): Track {
-        return Track(
+    fun mapToTrack(playlistTracksEntity: PlaylistTracksEntity): Track =
+        Track(
             true,
             playlistTracksEntity.trackName,
             playlistTracksEntity.artistName,
@@ -91,5 +86,4 @@ class DbConvertors {
             playlistTracksEntity.country,
             playlistTracksEntity.previewUrl
         )
-    }
 }
