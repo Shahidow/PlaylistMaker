@@ -2,7 +2,7 @@ package com.my.playlistmaker.data.search.impl
 
 import android.content.Context
 import com.google.gson.Gson
-import com.my.playlistmaker.Track
+import com.my.playlistmaker.domain.models.Track
 import com.my.playlistmaker.data.db.AppDatabase
 import com.my.playlistmaker.data.search.SearchHistoryRepository
 import kotlinx.coroutines.flow.Flow

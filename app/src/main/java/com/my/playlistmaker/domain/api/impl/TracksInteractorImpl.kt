@@ -1,6 +1,6 @@
 package com.my.playlistmaker.domain.api.impl
 
-import com.my.playlistmaker.Track
+import com.my.playlistmaker.domain.models.Track
 import com.my.playlistmaker.data.api.TracksRepository
 import com.my.playlistmaker.domain.api.Resource
 import com.my.playlistmaker.domain.api.TracksInteractor

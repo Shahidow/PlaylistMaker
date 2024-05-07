@@ -1,7 +1,7 @@
 package com.my.playlistmaker.data.db.impl
 
-import com.my.playlistmaker.Track
-import com.my.playlistmaker.data.converters.TrackDbConvertor
+import com.my.playlistmaker.domain.models.Track
+import com.my.playlistmaker.data.converters.DbConvertors
 import com.my.playlistmaker.data.db.AppDatabase
 import com.my.playlistmaker.data.db.FavoritesRepository
 import com.my.playlistmaker.data.db.entity.TrackEntity
@@ -10,16 +10,16 @@ import kotlinx.coroutines.flow.flow
 
 class FavoritesRepositoryImpl(
     private val appDatabase: AppDatabase,
-    private val trackDbConvertor: TrackDbConvertor
+    private val dbConvertors: DbConvertors
 ) : FavoritesRepository {
 
     override suspend fun setTrack(track: Track) {
-        val trackEntity = trackDbConvertor.map(track)
+        val trackEntity = dbConvertors.map(track)
         appDatabase.trackDao().insertTrack(trackEntity)
     }
 
     override suspend fun deleteTrack(track: Track) {
-        val trackEntity = trackDbConvertor.map(track)
+        val trackEntity = dbConvertors.map(track)
         appDatabase.trackDao().deleteTrackEntity(trackEntity)
     }
 
@@ -30,7 +30,7 @@ class FavoritesRepositoryImpl(
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
-        return tracks.map { track -> trackDbConvertor.map(track) }
+        return tracks.map { track -> dbConvertors.map(track) }
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.my.playlistmaker.Track
+import com.my.playlistmaker.R
+import com.my.playlistmaker.domain.models.Track
 import com.my.playlistmaker.databinding.FragmentSearchBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,6 +33,7 @@ class SearchFragment : Fragment() {
     private val trackList = ArrayList<Track>()
     private lateinit var binding: FragmentSearchBinding
     private val historyList: ArrayList<Track> = arrayListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +59,9 @@ class SearchFragment : Fragment() {
         val itemClickListener: RecyclerViewClickListener = object : RecyclerViewClickListener {
             override fun onItemClicked(track: Track) {
                 vm.addTrackToHistory(track)
+                val args = Bundle()
+                args.putSerializable("track", track)
+                findNavController().navigate(R.id.action_searchFragment_to_playerFragment, args)
             }
         }
 
