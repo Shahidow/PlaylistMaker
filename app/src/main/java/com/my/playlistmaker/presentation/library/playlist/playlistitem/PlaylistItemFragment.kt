@@ -112,8 +112,10 @@ class PlaylistItemFragment : Fragment() {
         vm.tracksLiveData.observe(this.viewLifecycleOwner) {
             trackList.clear()
             trackList.addAll(it)
-            adapter.notifyDataSetChanged()
             binding.totalMinutesInPlaylist.text = tracksTime()
+            binding.trackListEmpty.isVisible = trackList.isEmpty()
+            binding.playlistItemTracksRecycler.isVisible = trackList.isNotEmpty()
+            adapter.notifyDataSetChanged()
         }
 
         vm.playlistLiveData.observe(this.viewLifecycleOwner) {

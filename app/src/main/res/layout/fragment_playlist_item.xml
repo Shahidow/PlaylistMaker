@@ -154,11 +154,22 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/line_for_player" />
 
+        <TextView
+            android:id="@+id/trackListEmpty"
+            style="@style/SearchErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:text="В этом плейлисте нет треков"
+            android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playlistItemTracksRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <View
@@ -175,7 +186,7 @@
         android:background="@drawable/bottom_sheet_background"
         android:orientation="vertical"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="240dp"
+        app:behavior_peekHeight="380dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <ImageView
