@@ -20,7 +20,7 @@ import java.util.*
 class PlayerViewModel(
     private val favoritesInteractor: FavoritesInteractor,
     private val playlistInteractor: PlaylistInteractor,
-    private val gson: Gson
+    private val gson: Gson,
 ) : ViewModel() {
 
     companion object {
@@ -115,7 +115,7 @@ class PlayerViewModel(
     fun checkTrack(track: Track, playlist: Playlist) {
         val json = playlist.trackList
         val playlistTracks = gson.fromJson(json, Array<Long>::class.java).toMutableList()
-        if(playlistTracks.contains(track.trackId)) {
+        if (playlistTracks.contains(track.trackId)) {
             trackSetState.postValue(TrackSetState.Negative(playlist.playlistName))
         } else {
             viewModelScope.launch {
@@ -135,7 +135,8 @@ class PlayerViewModel(
                             playlist.playlistCoverUri,
                             newPlaylistTracks,
                             amountOfTracks
-                    ))
+                        )
+                    )
             }
             trackSetState.postValue(TrackSetState.Success(playlist.playlistName))
         }

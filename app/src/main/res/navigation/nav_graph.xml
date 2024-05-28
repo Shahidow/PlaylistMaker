@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_libraryFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_libraryFragment_to_playlistItemFragment"
+            app:destination="@id/playlistItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -32,7 +35,7 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/newPlaylistFragment"
-        android:name="com.my.playlistmaker.presentation.library.playlist.NewPlaylistFragment"
+        android:name="com.my.playlistmaker.presentation.library.playlist.newplaylist.NewPlaylistFragment"
         android:label="fragment_new_playlist"
         tools:layout="@layout/fragment_new_playlist" />
     <fragment
@@ -45,6 +48,18 @@
             app:argType="com.my.playlistmaker.domain.models.Track"/>
         <action
             android:id="@+id/action_playerFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistItemFragment"
+        android:name="com.my.playlistmaker.presentation.library.playlist.playlistitem.PlaylistItemFragment"
+        android:label="fragment_playlist_item"
+        tools:layout="@layout/fragment_playlist_item" >
+        <action
+            android:id="@+id/action_playlistItemFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_playlistItemFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment" />
     </fragment>
 </navigation>

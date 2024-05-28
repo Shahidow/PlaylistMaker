@@ -2,7 +2,6 @@ package com.my.playlistmaker.presentation.library.playlist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.my.playlistmaker.R
 import com.my.playlistmaker.databinding.FragmentPlaylistBinding
 import com.my.playlistmaker.domain.models.Playlist
+import com.my.playlistmaker.presentation.library.playlist.newplaylist.PlaylistRecyclerClickListener
+import com.my.playlistmaker.presentation.player.PlayerRecyclerClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : Fragment() {
@@ -23,7 +24,6 @@ class PlaylistFragment : Fragment() {
     private val vm by viewModel<PlaylistViewModel>()
     private var _binding: FragmentPlaylistBinding? = null
     private val binding get() = _binding!!
-
 
     companion object {
         fun newInstance() = PlaylistFragment().apply {
@@ -44,6 +44,14 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val itemClickListener: PlaylistRecyclerClickListener = object: PlaylistRecyclerClickListener {
+            override fun onItemClicked(playlist: Playlist) {
+                val args = Bundle()
+                args.putSerializable("playlist", playlist.playlistId)
+                findNavController().navigate(R.id.action_libraryFragment_to_playlistItemFragment, args)
+            }
+        }
+
         vm.playlistsLiveData.observe(this.viewLifecycleOwner){
             playlists.clear()
             playlists.addAll(it)
@@ -52,7 +60,7 @@ class PlaylistFragment : Fragment() {
         }
 
         recyclerPlaylist = binding.playlistRecycler
-        adapter = PlaylistAdapter(playlists)
+        adapter = PlaylistAdapter(playlists, itemClickListener)
         recyclerPlaylist.layoutManager = GridLayoutManager(requireActivity().applicationContext, 2)
         recyclerPlaylist.adapter = adapter
         vm.getPlaylists()
