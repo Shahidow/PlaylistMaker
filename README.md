@@ -73,8 +73,11 @@ androidx.room:room-ktx:2.5.1
 
 1. Клонирование репозитория:
 
+```
 git clone <URL_вашего_репозитория>
+
 cd playlistmaker
+```
 
 
 
