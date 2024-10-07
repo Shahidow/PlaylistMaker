@@ -13,53 +13,67 @@
 
 ## Версии SDK
 
-Compile SDK Version: 33
+* Compile SDK Version: 33
 
-Minimum SDK Version: 29
+* Minimum SDK Version: 29
 
-Target SDK Version: 33
+* Target SDK Version: 33
 
 
 ## Версия языка
 
-Kotlin: 1.7 или выше
+* Kotlin: 1.7 или выше
 
 
 ## Основные зависимости проекта:
 
-Kotlin Coroutines: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4
+* **Kotlin Coroutines:**
 
-AndroidX Navigation: 
+  org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4
+
+* **AndroidX Navigation:** 
 
 androidx.navigation:navigation-fragment-ktx:2.5.3
 
 androidx.navigation:navigation-ui-ktx:2.5.3
 
-AndroidX Fragment: androidx.fragment:fragment-ktx:1.5.6
+* **AndroidX Fragment:**
 
-Material Design: com.google.android.material:material:1.9.0
+  androidx.fragment:fragment-ktx:1.5.6
 
-ViewPager2: androidx.viewpager2:viewpager2:1.0.0
+* **Material Design:**
 
-Koin: io.insert-koin:koin-android:3.3.0
+  com.google.android.material:material:1.9.0
 
-RxJava: io.reactivex.rxjava3:rxjava:3.1.8
+* **ViewPager2:**
 
-Retrofit:
+  androidx.viewpager2:viewpager2:1.0.0
+
+* **Koin:**
+
+  io.insert-koin:koin-android:3.3.0
+
+* **RxJava:**
+
+  io.reactivex.rxjava3:rxjava:3.1.8
+
+* **Retrofit:**
 
 com.squareup.retrofit2:retrofit:2.9.0
 
 com.squareup.retrofit2:converter-gson:2.9.0
 
-Gson: com.google.code.gson:gson:2.10.1
+* **Gson:**
 
-Glide:
+  com.google.code.gson:gson:2.10.1
+
+* **Glide:**
 
 com.github.bumptech.glide:glide:4.14.2
 
 com.github.bumptech.glide:compiler:4.14.2
 
-Room:
+* **Room:**
 
 androidx.room:room-runtime:2.5.1
 
