@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,7 @@ class SearchFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var noResults: LinearLayout
     private lateinit var noInternet: LinearLayout
-    private lateinit var historyLayout: LinearLayout
+    private lateinit var historyLayout: NestedScrollView
     private lateinit var recyclerTrack: RecyclerView
     private lateinit var adapter: TrackAdapter
     private val trackList = ArrayList<Track>()

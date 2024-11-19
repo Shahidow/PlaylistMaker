@@ -10,8 +10,19 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.my.playlistmaker.R
 import com.my.playlistmaker.domain.models.Playlist
+import com.my.playlistmaker.presentation.library.playlist.newplaylist.PlaylistRecyclerClickListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class PlaylistAdapter(private val playlist: List<Playlist>) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
+class PlaylistAdapter(private val playlist: List<Playlist>, private val clickListener: PlaylistRecyclerClickListener) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
+
+    private var isClickAllowed = true
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
 
     class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val playlistName: TextView
@@ -47,6 +58,17 @@ class PlaylistAdapter(private val playlist: List<Playlist>) : RecyclerView.Adapt
         }
     }
 
+    private fun clickDebounce(coroutineScope: CoroutineScope): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            coroutineScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist, parent, false)
         return PlaylistViewHolder(view)
@@ -57,6 +79,12 @@ class PlaylistAdapter(private val playlist: List<Playlist>) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
         holder.bind(playlist[position])
+        holder.itemView.setOnClickListener {
+            if (clickDebounce(coroutineScope)) {
+                clickListener.onItemClicked(playlist[position])
+            }
+        }
     }
 }

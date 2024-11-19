@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,7 +19,6 @@ import com.my.playlistmaker.R
 import com.my.playlistmaker.domain.models.Track
 import com.my.playlistmaker.databinding.FragmentPlayerBinding
 import com.my.playlistmaker.domain.models.Playlist
-import com.my.playlistmaker.presentation.library.playlist.PlaylistAdapter
 import com.my.playlistmaker.presentation.player.mapper.trackMapper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
